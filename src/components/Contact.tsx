@@ -1,9 +1,12 @@
 'use client';
 
-import { Mail, MessageCircle } from 'lucide-react';
+import { Mail, MessageCircle, ArrowRight } from 'lucide-react';
 import { personalInfo } from '@/data/portfolio';
+import { useScrollReveal } from '@/hooks';
 
 export default function Contact() {
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
+
   const handleWhatsApp = () => {
     const message = encodeURIComponent('Hola, me interesa solicitar tus servicios.');
     window.open(`https://wa.me/${personalInfo.phone}?text=${message}`, '_blank');
@@ -16,26 +19,37 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24">
-      <div className="max-w-2xl mx-auto px-6 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Contacto</h2>
-        <p className="text-gray-500 mb-10">
-          ¿Necesitas desarrollo de software? Hablemos.
+    <section id="contact" className="py-24 relative">
+      <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 via-purple-500/5 to-transparent" />
+
+      <div
+        ref={ref}
+        className={`max-w-2xl mx-auto px-6 text-center relative transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
+        <p className="text-indigo-400 font-medium mb-2 tracking-wider">CONTACTO</p>
+        <h2 className="text-4xl font-bold mb-4">Hablemos</h2>
+        <p className="text-zinc-400 mb-10 max-w-lg mx-auto">
+          ¿Necesitas desarrollo de software? Conversemos sobre tu proyecto y encontremos la mejor solución.
         </p>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={handleWhatsApp}
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            className="group flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-full hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 hover:-translate-y-1"
           >
-            <MessageCircle size={20} />
+            <MessageCircle size={22} />
             WhatsApp
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>
           <button
             onClick={handleEmail}
-            className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            className="group flex items-center justify-center gap-3 px-8 py-4 glass rounded-full border border-white/10 hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1"
           >
-            <Mail size={20} />
+            <Mail size={22} />
             Email
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
         </div>
       </div>

@@ -10,7 +10,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Carlos Durán | Desarrollador de Software",
   description: "Desarrollo de software a medida. Sitios web, aplicaciones móviles y soluciones personalizadas.",
-  keywords: ["desarrollador", "software", "web", "mobile", "programador"],
+  keywords: ["desarrollador", "software", "web", "mobile", "programador", "Argentina"],
+  authors: [{ name: "Carlos Durán" }],
+  openGraph: {
+    title: "Carlos Durán | Desarrollador de Software",
+    description: "Desarrollo de software a medida. Sitios web, aplicaciones móviles y soluciones personalizadas.",
+    type: "website",
+    locale: "es_AR",
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={inter.variable}>
-      <body className="min-h-full flex flex-col font-sans antialiased text-gray-900">
+      <body className="min-h-full flex flex-col font-sans antialiased">
         {children}
       </body>
     </html>

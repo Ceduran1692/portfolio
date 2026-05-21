@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
@@ -12,15 +12,25 @@ const navItems = [
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
-      <nav className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        <a href="#" className="text-xl font-bold text-gray-900">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'glass py-3' : 'py-5'
+      }`}
+    >
+      <nav className="max-w-6xl mx-auto px-6 flex justify-between items-center">
+        <a href="#" className="text-xl font-bold gradient-text">
           CD
         </a>
 
@@ -29,9 +39,10 @@ export default function Header() {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-zinc-400 hover:text-white transition-colors duration-300 relative group"
               >
                 {item.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover:w-full transition-all duration-300" />
               </a>
             </li>
           ))}
@@ -39,7 +50,7 @@ export default function Header() {
 
         <button
           onClick={toggleMenu}
-          className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+          className="md:hidden p-2 text-zinc-400 hover:text-white transition-colors"
           aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -47,14 +58,14 @@ export default function Header() {
       </nav>
 
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100">
+        <div className="md:hidden glass border-t border-white/10">
           <ul className="px-6 py-4 space-y-4">
             {navItems.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   onClick={closeMenu}
-                  className="block text-gray-600 hover:text-gray-900 py-2"
+                  className="block text-zinc-400 hover:text-white py-2 transition-colors"
                 >
                   {item.label}
                 </a>
