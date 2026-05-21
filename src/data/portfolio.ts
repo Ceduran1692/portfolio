@@ -28,24 +28,6 @@ export const socialLinkSchema = z.object({
 
 export type SocialLink = z.infer<typeof socialLinkSchema>;
 
-export const personalInfoSchema = z.object({
-  name: z.string().min(1).max(100),
-  title: z.string().min(1).max(100),
-  description: z.string().min(1).max(300),
-  email: z.string().email(),
-  phone: z.string().regex(/^\+?[1-9]\d{6,14}$/),
-});
-
-export type PersonalInfo = z.infer<typeof personalInfoSchema>;
-
-export const personalInfo = {
-  name: 'Carlos Durán',
-  title: 'Desarrollador de Software',
-  description: 'Desarrollo software a medida que transforma ideas en soluciones digitales.',
-  email: 'carlos@duran.com',
-  phone: '+5491166666666',
-} as const satisfies PersonalInfo;
-
 export const services: Service[] = [
   {
     id: 'web-dev',
@@ -70,19 +52,6 @@ export const services: Service[] = [
     title: 'Consultoría Tech',
     description: 'Asesoría técnica para proyectos y equipos de desarrollo.',
     icon: 'Lightbulb',
-  },
-] as const;
-
-export const socialLinks: SocialLink[] = [
-  {
-    platform: 'linkedin',
-    url: 'https://linkedin.com/in/carlos-duran',
-    label: 'LinkedIn',
-  },
-  {
-    platform: 'github',
-    url: 'https://github.com/Ceduran1692',
-    label: 'GitHub',
   },
 ] as const;
 

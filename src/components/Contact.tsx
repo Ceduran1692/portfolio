@@ -1,7 +1,7 @@
 'use client';
 
 import { Mail, MessageCircle, ArrowRight } from 'lucide-react';
-import { personalInfo } from '@/data/portfolio';
+import { personalInfo } from '@/lib/env';
 import { useScrollReveal } from '@/hooks';
 
 export default function Contact() {

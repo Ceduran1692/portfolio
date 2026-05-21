@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { personalInfo, socialLinks, websiteUrl } from '@/lib/env';
 import './globals.css';
 
 const inter = Inter({
@@ -7,30 +8,28 @@ const inter = Inter({
   subsets: ['latin'],
 });
 
-const websiteUrl = 'https://cduran.com.ar';
-
 export const metadata: Metadata = {
   metadataBase: new URL(websiteUrl),
   title: {
-    default: 'Carlos Durán | Desarrollador de Software',
-    template: '%s | Carlos Durán',
+    default: `${personalInfo.name} | ${personalInfo.title}`,
+    template: `%s | ${personalInfo.name}`,
   },
-  description: 'Desarrollo de software a medida. Sitios web, aplicaciones móviles y soluciones personalizadas.',
+  description: personalInfo.description,
   keywords: ['desarrollador', 'software', 'web', 'mobile', 'programador', 'Argentina', 'Buenos Aires'],
-  authors: [{ name: 'Carlos Durán', url: websiteUrl }],
-  creator: 'Carlos Durán',
+  authors: [{ name: personalInfo.name, url: websiteUrl }],
+  creator: personalInfo.name,
   openGraph: {
     type: 'website',
     locale: 'es_AR',
     url: websiteUrl,
-    siteName: 'Carlos Durán Portfolio',
-    title: 'Carlos Durán | Desarrollador de Software',
-    description: 'Desarrollo de software a medida. Sitios web, aplicaciones móviles y soluciones personalizadas.',
+    siteName: `${personalInfo.name} Portfolio`,
+    title: `${personalInfo.name} | ${personalInfo.title}`,
+    description: personalInfo.description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Carlos Durán | Desarrollador de Software',
-    description: 'Desarrollo de software a medida.',
+    title: `${personalInfo.name} | ${personalInfo.title}`,
+    description: personalInfo.description,
   },
   robots: {
     index: true,
@@ -42,13 +41,10 @@ export const metadata: Metadata = {
 const schemaOrgData = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Carlos Durán',
-  jobTitle: 'Desarrollador de Software',
+  name: personalInfo.name,
+  jobTitle: personalInfo.title,
   url: websiteUrl,
-  sameAs: [
-    'https://linkedin.com/in/carlos-duran',
-    'https://github.com/Ceduran1692',
-  ],
+  sameAs: socialLinks.map((link) => link.url),
   knowsAbout: ['Web Development', 'Mobile Development', 'Software Architecture'],
   address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
 };

@@ -2,7 +2,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
-import { personalInfo, socialLinks } from '@/data/portfolio';
+import { personalInfo, socialLinks } from '@/lib/env';
 import { useScrollReveal, useTypingEffect } from '@/hooks';
 
 export default function Hero() {
