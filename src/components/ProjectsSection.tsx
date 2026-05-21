@@ -1,12 +1,12 @@
 import Projects from './Projects';
-import { fetchGitHubRepos } from '@/lib/github';
+import { fetchGitHubRepos, filterActiveRepos } from '@/lib/github';
 
 async function getGitHubRepos() {
   try {
     const repos = await fetchGitHubRepos('Ceduran1692');
-    return repos.filter((repo) => !repo.fork && !repo.archived);
+    return filterActiveRepos(repos);
   } catch (error) {
-    console.error('Failed to fetch GitHub repos:', error);
+    console.error('Error fetching GitHub repos:', error);
     return [];
   }
 }

@@ -15,20 +15,39 @@ export interface GitHubRepo {
   updated_at: string;
 }
 
+export type AsyncState<T> =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: string };
+
+const GITHUB_API_URL = 'https://api.github.com';
+const REVALIDATE_INTERVAL = 3600;
+
 export async function fetchGitHubRepos(username: string): Promise<GitHubRepo[]> {
-  const response = await fetch(
-    `https://api.github.com/users/${username}/repos?sort=updated&per_page=9&type=public`,
-    {
-      next: { revalidate: 3600 },
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    }
-  );
+  const url = `${GITHUB_API_URL}/users/${username}/repos?sort=updated&per_page=9&type=public`;
+
+  const response = await fetch(url, {
+    next: { revalidate: REVALIDATE_INTERVAL },
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+      'User-Agent': 'PortfolioWebsite',
+    },
+  });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch repos: ${response.status}`);
+    const message = `GitHub API error: ${response.status} ${response.statusText}`;
+    throw new Error(message);
   }
 
-  return response.json();
+  const repos: GitHubRepo[] = await response.json();
+  return repos;
+}
+
+export function filterActiveRepos(repos: GitHubRepo[]): GitHubRepo[] {
+  return repos.filter((repo) => !repo.fork && !repo.archived);
+}
+
+export function sortReposByStars(repos: GitHubRepo[]): GitHubRepo[] {
+  return [...repos].sort((a, b) => b.stargazers_count - a.stargazers_count);
 }

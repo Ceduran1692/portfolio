@@ -1,24 +1,42 @@
-export interface Service {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-}
+import { z } from 'zod';
 
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  link?: string;
-  github?: string;
-}
+export const serviceSchema = z.object({
+  id: z.string(),
+  title: z.string().min(1).max(50),
+  description: z.string().min(1).max(200),
+  icon: z.enum(['Code', 'Smartphone', 'Workflow', 'Lightbulb']),
+});
 
-export interface SocialLink {
-  platform: 'linkedin' | 'github';
-  url: string;
-  label: string;
-}
+export type Service = z.infer<typeof serviceSchema>;
+
+export const projectSchema = z.object({
+  id: z.string(),
+  title: z.string().min(1).max(100),
+  description: z.string().min(1).max(300),
+  technologies: z.array(z.string()).min(1),
+  link: z.string().url().optional(),
+  github: z.string().url().optional(),
+});
+
+export type Project = z.infer<typeof projectSchema>;
+
+export const socialLinkSchema = z.object({
+  platform: z.enum(['linkedin', 'github']),
+  url: z.string().url(),
+  label: z.string(),
+});
+
+export type SocialLink = z.infer<typeof socialLinkSchema>;
+
+export const personalInfoSchema = z.object({
+  name: z.string().min(1).max(100),
+  title: z.string().min(1).max(100),
+  description: z.string().min(1).max(300),
+  email: z.string().email(),
+  phone: z.string().regex(/^\+?[1-9]\d{6,14}$/),
+});
+
+export type PersonalInfo = z.infer<typeof personalInfoSchema>;
 
 export const personalInfo = {
   name: 'Carlos Durán',
@@ -26,7 +44,7 @@ export const personalInfo = {
   description: 'Desarrollo software a medida que transforma ideas en soluciones digitales.',
   email: 'carlos@duran.com',
   phone: '+5491166666666',
-};
+} as const satisfies PersonalInfo;
 
 export const services: Service[] = [
   {
@@ -53,31 +71,7 @@ export const services: Service[] = [
     description: 'Asesoría técnica para proyectos y equipos de desarrollo.',
     icon: 'Lightbulb',
   },
-];
-
-export const projects: Project[] = [
-  {
-    id: 'project-1',
-    title: 'E-commerce Platform',
-    description: 'Plataforma de ventas online con panel de administración.',
-    technologies: ['Next.js', 'TypeScript', 'PostgreSQL', 'Stripe'],
-    link: 'https://example.com',
-  },
-  {
-    id: 'project-2',
-    title: 'CRM Dashboard',
-    description: 'Sistema de gestión de clientes con análisis en tiempo real.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Chart.js'],
-    link: 'https://example.com',
-  },
-  {
-    id: 'project-3',
-    title: 'Task Manager API',
-    description: 'API REST para gestión de tareas con autenticación JWT.',
-    technologies: ['Node.js', 'Express', 'TypeScript', 'Docker'],
-    github: 'https://github.com/example',
-  },
-];
+] as const;
 
 export const socialLinks: SocialLink[] = [
   {
@@ -90,4 +84,26 @@ export const socialLinks: SocialLink[] = [
     url: 'https://github.com/Ceduran1692',
     label: 'GitHub',
   },
-];
+] as const;
+
+export const skills = [
+  'JavaScript / TypeScript',
+  'React / Next.js',
+  'Node.js',
+  'Python',
+  'PostgreSQL / MongoDB',
+  'Docker',
+  'Git',
+  'AWS',
+] as const;
+
+export type Skill = (typeof skills)[number];
+
+export const stats = [
+  { label: 'Proyectos', value: '50+', ariaLabel: 'Más de 50 proyectos completados' },
+  { label: 'Clientes', value: '30+', ariaLabel: 'Más de 30 clientes satisfechos' },
+  { label: 'Equipos', value: '15+', ariaLabel: 'Más de 15 equipos liderados' },
+  { label: 'Años exp.', value: '8+', ariaLabel: 'Más de 8 años de experiencia' },
+] as const;
+
+export type Stat = (typeof stats)[number];
